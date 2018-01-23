@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Engine/World.h"
 #include "BattleTank.h"
 
 void ATankPlayerController::BeginPlay()
@@ -12,10 +13,6 @@ void ATankPlayerController::BeginPlay()
 	if (!ControlledTank)
 	{
 		UE_LOG(LogTemp, Error, TEXT("PlayerController not possessing a tank"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController possessing %s"), (*ControlledTank->GetName()));
 	}
 }
 
@@ -39,6 +36,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	if (GetSightRayHitLocation(OutHitLocation))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *OutHitLocation.ToString());
 		// TODO Rotate barrel to face HitLocation
 	}
 }
@@ -54,15 +52,37 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *LookDirection.ToString());
+		// Line trace along that look direction, see what we hit (up to max range)
+		GetLookVectorHitLocation(LookDirection, OutHitLocation);
 	}
-	//// Line trace along that look direction, see what we hit (up to max range)
-
 	return true;
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
 {
 	FVector CameraWorldLocation; // We don't need this, but it has to be passed into a deproject anyway.
-	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection);
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection); // Get the XYZ world coordinates based on our parameters
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const
+{
+	FHitResult HitResult;
+	auto StartLocation = PlayerCameraManager->GetCameraLocation(); // Start our line trace at the camera's location
+	auto EndLocation = StartLocation + (LookDirection * LineTraceRange); // End it 10km from our start location, in the direction of LookDirection
+
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult, // Where we store our hit
+		StartLocation, // Where the trace starts
+		EndLocation, // Where the trace ends
+		ECollisionChannel::ECC_Visibility) // Tells our trace what to collide with. In this case, everything we can see
+		)
+	{
+		OutHitLocation = HitResult.Location;
+		return true;
+	}
+	else
+	{
+		OutHitLocation = FVector(0);
+		return false;
+	}
 }

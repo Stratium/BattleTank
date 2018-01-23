@@ -26,10 +26,6 @@ void ATankAIController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("AI %s did not find a player"), *(AIControlledTank->GetName()))
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AI %s found player: %s"), *(AIControlledTank->GetName()), *(PlayerTank->GetName()))
-	}
 }
 
 ATank* ATankAIController::GetAIControlledTank() const
