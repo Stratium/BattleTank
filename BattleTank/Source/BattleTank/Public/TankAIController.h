@@ -16,6 +16,6 @@ private:
 	ATank* GetAIControlledTank() const;
 	ATank* GetPlayerPawn() const;
 
-public:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 };

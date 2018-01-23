@@ -17,14 +17,20 @@ void ATankAIController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("AI not found on tank %s"), (*AIControlledTank->GetName()))
 	}
-	else
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("AI possessing tank %s"), (*AIControlledTank->GetName()))
-	}
 
 	if (!PlayerTank)
 	{
 		UE_LOG(LogTemp, Error, TEXT("AI %s did not find a player"), *(AIControlledTank->GetName()))
+	}
+}
+
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (GetPlayerPawn())
+	{
+		GetAIControlledTank()->AimAt(GetPlayerPawn()->GetActorLocation()); // Get the location of the player
 	}
 }
 
