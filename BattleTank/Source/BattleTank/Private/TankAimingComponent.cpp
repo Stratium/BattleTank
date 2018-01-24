@@ -2,6 +2,7 @@
 
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TankBarrel.h"
 #include "Engine.h"
 
 UTankAimingComponent::UTankAimingComponent()
@@ -54,5 +55,5 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimAsRotator = AimDirection.Rotation(); // Convert our AimDirection
 	auto DeltaRotator = AimAsRotator - BarrelRotator; // Get the difference between the two rotations. 
 
-	Barrel->Elevate(5); // TODO remove magic number
+	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number
 }
