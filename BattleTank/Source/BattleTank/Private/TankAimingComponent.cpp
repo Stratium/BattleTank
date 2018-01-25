@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Engine.h"
 
 UTankAimingComponent::UTankAimingComponent()
@@ -33,8 +34,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal(); // Turns our out parameter into a unit vector
 		MoveBarrelTowards(AimDirection);
-		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Barrel Elevate Called"), Time);
+		MoveTurretTowards(AimDirection);
 	}
 	else
 	{
@@ -48,6 +48,11 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 	Barrel = BarrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
+{
+	Turret = TurretToSet;
+}
+
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 	// Calculate difference between current barrel rotation and Aim Direction
@@ -55,5 +60,13 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimAsRotator = AimDirection.Rotation(); // Convert our AimDirection
 	auto DeltaRotator = AimAsRotator - BarrelRotator; // Get the difference between the two rotations. 
 
-	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number
+	Barrel->Elevate(DeltaRotator.Pitch);
+}
+
+void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+{
+	auto TurretRotator = Turret->GetForwardVector().Rotation(); // Get the direction the barrel is looking (x axis) and convert it into a rotation
+	auto AimAsRotator = AimDirection.Rotation(); // Convert our AimDirection
+	auto DeltaRotator = AimAsRotator - TurretRotator; // Get the difference between the two rotations. 
+	Turret->Rotate(DeltaRotator.Yaw);
 }
