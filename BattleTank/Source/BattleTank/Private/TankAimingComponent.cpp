@@ -8,7 +8,7 @@
 
 UTankAimingComponent::UTankAimingComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true; // TODO should this really tick?
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
@@ -45,11 +45,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
+	if (!BarrelToSet) { return; }
 	Barrel = BarrelToSet;
 }
 
 void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
 {
+	if (!TurretToSet) { return; }
 	Turret = TurretToSet;
 }
 
@@ -65,7 +67,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 {
-	auto TurretRotator = Turret->GetForwardVector().Rotation(); // Get the direction the barrel is looking (x axis) and convert it into a rotation
+	auto TurretRotator = Turret->GetForwardVector().Rotation(); // Get the direction the turret is looking (x axis) and convert it into a rotation
 	auto AimAsRotator = AimDirection.Rotation(); // Convert our AimDirection
 	auto DeltaRotator = AimAsRotator - TurretRotator; // Get the difference between the two rotations. 
 	Turret->Rotate(DeltaRotator.Yaw);

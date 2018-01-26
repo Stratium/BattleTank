@@ -37,8 +37,6 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	if (GetSightRayHitLocation(OutHitLocation))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *OutHitLocation.ToString());
-		// TODO Rotate barrel to face HitLocation
 		GetControlledTank()->AimAt(OutHitLocation);
 	}
 }
