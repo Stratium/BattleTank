@@ -7,14 +7,16 @@
 #include "TankTracks.generated.h"
 
 /**
- * 
+ * Tank Tracks are used to set maximum driving force and to apply forces to the tank. It is based from StaticMeshComponent and should be duplicated in all instances of Tank, one for each track.
  */
 UCLASS(meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankTracks : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 	
-	
+public:
+	UFUNCTION(BlueprintCallable, Category = Input)
+	void SetThrottle(float Throttle);
 	
 	
 };

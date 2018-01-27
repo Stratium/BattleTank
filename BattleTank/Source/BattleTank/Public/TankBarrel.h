@@ -7,8 +7,8 @@
 #include "TankBarrel.generated.h"
 
 /**
- * 
- */
+* Tank Barrel is used to elevate the static mesh of the barrel to face the pitch of the mouse. It is based from StaticMeshComponent.
+*/
 UCLASS(meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
