@@ -30,14 +30,14 @@ protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:	
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing) // EditAnywhere alternative https://wiki.unrealengine.com/UPROPERTY
 	float LaunchSpeed = 4000;
 
 	float ReloadTimeInSeconds = 3.0f;
 
 	double LastFireTime = 0;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	TSubclassOf<AProjectile> ProjectileBlueprint; // Alternatives https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf/
 
 	// Sets default values for this pawn's properties
