@@ -20,6 +20,7 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (PlayerPawn)
 	{
+		MoveToActor(PlayerPawn, AcceptanceRadius);
 		AITank->AimAt(PlayerPawn->GetActorLocation()); // Get the location of the player
 		AITank->Fire();
 	}
