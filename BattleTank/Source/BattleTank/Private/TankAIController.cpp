@@ -18,9 +18,10 @@ void ATankAIController::Tick(float DeltaTime)
 	auto PlayerPawn = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	auto AITank = Cast<ATank>(GetPawn());
 
-	if (PlayerPawn)
+	if (ensure(PlayerPawn))
 	{
 		MoveToActor(PlayerPawn, AcceptanceRadius);
+		UE_LOG(LogTemp, Warning, TEXT("BOO IM COMING FOR YOU"));
 		AITank->AimAt(PlayerPawn->GetActorLocation()); // Get the location of the player
 		AITank->Fire();
 	}

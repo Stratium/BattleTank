@@ -14,7 +14,6 @@ enum class EFiringState : uint8
 	Reloading
 };
 
-// Forward declaration. Allows us to reference types without creating chains of dependancies
 class UTankBarrel;
 class UTankTurret;
 
@@ -26,18 +25,17 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringState FiringState = EFiringState::Reloading;
+	EFiringState FiringState = EFiringState::Aiming;
 
 private:	
+	UTankAimingComponent();
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	void MoveBarrelTowards(FVector AimDirection);
 	void MoveTurretTowards(FVector AimDirection);
 
 public:	
-	UTankAimingComponent();
-
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 	void AimAt(FVector HitLocation, float LaunchSpeed);
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	void SetTurretReference(UTankTurret* TurretToSet);
 };
