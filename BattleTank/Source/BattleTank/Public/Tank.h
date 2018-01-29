@@ -6,7 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTankAimingComponent;
 class UTankBarrel;
 class AProjectile;
 
@@ -15,15 +14,9 @@ class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
 
-protected:
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent = nullptr;
-
 private:
 	ATank(); // Sets default values for this pawn's properties
 	virtual void BeginPlay() override; // Called when the game starts or when spawned
-	UPROPERTY(EditDefaultsOnly, Category = "Firing") // EditAnywhere alternative https://wiki.unrealengine.com/UPROPERTY
-	float LaunchSpeed = 4000;
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	TSubclassOf<AProjectile> ProjectileBlueprint; // Alternatives https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf/
 	float ReloadTimeInSeconds = 3.0f;
@@ -31,8 +24,10 @@ private:
 
 	UTankBarrel* Barrel = nullptr; // TODO Remove barrel reference from tank.h
 
+	UPROPERTY(EditDefaultsOnly, Category = "Firing") // TODO Remove launchspeed from tank.cpp
+	float LaunchSpeed = 4000;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void Fire();
-	void AimAt(FVector HitLocation);
 };
