@@ -13,15 +13,13 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-	if (!ensure(BarrelToSet && !TurretToSet)) { return; }
-
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!ensure(Barrel)) { return; }
+	if (!ensure(Barrel)) { return; } // TODO ENSURE FAILED
 
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile")); // Find the socket called Projectile on barrel. If it cant, it simply chooses the origin of Barrel
@@ -42,28 +40,19 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (bHaveAimSolution)
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal(); // Turns our out parameter into a unit vector
-		MoveBarrelTowards(AimDirection);
-		MoveTurretTowards(AimDirection);
+		MoveAimingTowards(AimDirection);
 	}
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::MoveAimingTowards(FVector AimDirection)
 {
-	if (!ensure(Barrel)) { return; }
-	// Calculate difference between current barrel rotation and Aim Direction
-	auto BarrelRotator = Barrel->GetForwardVector().Rotation(); // Get the direction the barrel is looking (x axis) and convert it into a rotation
-	auto AimAsRotator = AimDirection.Rotation(); // Convert our AimDirection
-	auto DeltaRotator = AimAsRotator - BarrelRotator; // Get the difference between the two rotations. 
+	if (!ensure(Barrel) || !ensure(Turret)) { return; }
+
+	// Work-out difference between current barrel roation, and AimDirection
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 	Barrel->Elevate(DeltaRotator.Pitch);
-}
-
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
-{
-	if (!ensure(Turret)) { return; }
-	auto TurretRotator = Turret->GetForwardVector().Rotation(); // Get the direction the turret is looking (x axis) and convert it into a rotation
-	auto AimAsRotator = AimDirection.Rotation(); // Convert our AimDirection
-	auto DeltaRotator = AimAsRotator - TurretRotator; // Get the difference between the two rotations. 
-
 	Turret->Rotate(DeltaRotator.Yaw);
 }

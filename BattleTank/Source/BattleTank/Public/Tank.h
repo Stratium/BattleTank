@@ -7,7 +7,6 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
-class UTankMovementComponent;
 class UTankBarrel;
 class AProjectile;
 
@@ -19,8 +18,6 @@ class BATTLETANK_API ATank : public APawn
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent* TankAimingComponent = nullptr;
-	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovementComponent = nullptr;
 
 private:
 	ATank(); // Sets default values for this pawn's properties
@@ -35,8 +32,6 @@ private:
 	UTankBarrel* Barrel = nullptr; // TODO Remove barrel reference from tank.h
 
 public:
-	//UFUNCTION(BlueprintCallable, Category = "Setup")
-	//void SetBarrelAndTurretReference(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 	void AimAt(FVector HitLocation);

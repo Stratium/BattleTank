@@ -31,8 +31,7 @@ private:
 	UTankAimingComponent();
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
-	void MoveBarrelTowards(FVector AimDirection);
-	void MoveTurretTowards(FVector AimDirection);
+	void MoveAimingTowards(FVector AimDirection);
 
 public:	
 	UFUNCTION(BlueprintCallable, Category = "Setup")
