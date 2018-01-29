@@ -1,4 +1,4 @@
-// Forget copyrights, do whatever you want with these files
+// Copyright Tony Faye
 
 #include "TankMovementComponent.h"
 #include "TankTracks.h"
@@ -12,6 +12,7 @@ void UTankMovementComponent::Initialise(UTankTracks* LeftTrackToSet, UTankTracks
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
 	if (!ensure(LeftTrack && RightTrack)) { return; }
+
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
 }
@@ -19,6 +20,7 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
 void UTankMovementComponent::IntendTurnRight(float Throw)
 {
 	if (!ensure(LeftTrack && RightTrack)) { return; }
+
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 }
@@ -32,6 +34,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	auto ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
 	auto RightThrowVector = FVector::CrossProduct(TankForward, AIForwardIntention);
 	float RightThrow = RightThrowVector.Z;
+
 	IntendTurnRight(RightThrow);
 	IntendMoveForward(ForwardThrow);
 }

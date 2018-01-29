@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Tony Faye
 
 #pragma once
 
@@ -9,7 +9,7 @@
 class UTankAimingComponent;
 
 /**
- * Responsible for helping the player aim
+ * TankPlayerController handles all inputs and raycasts which it passes to the TankAimingComponent
  */
 
 UCLASS()

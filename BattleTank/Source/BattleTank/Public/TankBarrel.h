@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Tony Faye
 
 #pragma once
 
@@ -7,8 +7,8 @@
 #include "TankBarrel.generated.h"
 
 /**
-* Tank Barrel is used to elevate the static mesh of the barrel to face the pitch of the mouse. It is based from StaticMeshComponent.
-*/
+ * TankBarrel is used to elevate the static mesh of the barrel to face the pitch of the mouse. It is based from StaticMeshComponent.
+ */
 UCLASS(meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
@@ -21,10 +21,8 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly)
 	float MaxDegreesPerSecond = 20; // Sensible default
-
 	UPROPERTY(EditDefaultsOnly)
 	float MinimumElevationDegrees = 0;
-
 	UPROPERTY(EditDefaultsOnly)
 	float MaximumElevationDegrees = 40;
 };

@@ -1,4 +1,4 @@
-// Forget copyrights, do whatever you want with these files
+// Copyright Tony Faye
 
 #pragma once
 
@@ -9,7 +9,7 @@
 class UTankTracks;
 
 /**
- * Responsible for driving the tank tracks
+ * TankMovementComponent is responsible for driving the tank tracks
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent

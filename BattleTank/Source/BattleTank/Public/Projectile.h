@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Tony Faye
 
 #pragma once
 
@@ -7,20 +7,22 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Projectile.generated.h"
 
+/*
+ * Projectile defines the projectile movement
+ */
+
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+	AProjectile(); // Sets default values for this actor's properties
 	virtual void Tick(float DeltaTime) override;
-	// Sets default values for this actor's properties
-	AProjectile();
+
 	void LaunchProjectile(float Speed);
 
 private:

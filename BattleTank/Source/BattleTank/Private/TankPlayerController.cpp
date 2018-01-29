@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Tony Faye
 
 #include "TankPlayerController.h"
 #include "Engine/World.h"
@@ -9,7 +9,9 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay(); // Ensures that this is being called when overriding methods from higher in the inheritance tree
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+
 	if (!ensure(AimingComponent)) { return; }
+
 	FoundAimingComponent(AimingComponent);
 }
 
@@ -22,6 +24,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+
 	if (!ensure(AimingComponent)) { return; }
 
 	FVector OutHitLocation; // OUT Parameter
@@ -36,11 +39,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 {
 	// Find the crosshair position in pixel coordinates
 	int32 ViewportSizeX, ViewportSizeY;
+
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
+
 	auto ScreenLocation = FVector2D(ViewportSizeX * CrossHairXLocation, ViewportSizeY * CrossHairYLocation);
 
 	// De-project the screen position of the crosshair to a world direction
 	FVector LookDirection;
+
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		// Line trace along that look direction, see what we hit (up to max range)
@@ -52,6 +58,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
 {
 	FVector CameraWorldLocation; // We don't need this, but it has to be passed into a deproject anyway.
+
 	return DeprojectScreenPositionToWorld(
 		ScreenLocation.X,
 		ScreenLocation.Y,

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Tony Faye
 
 #pragma once
 
@@ -7,8 +7,8 @@
 #include "TankTurret.generated.h"
 
 /**
-* Tank Turret is used to rotate the static mesh of the turret to face the yaw of the mouse. It is based from StaticMeshComponent.
-*/
+ * Tank Turret is used to rotate the static mesh of the turret to face the yaw of the mouse. It is based from StaticMeshComponent.
+ */
 UCLASS(meta = (BlueprintSpawnableComponent), hidecategories = ("Collision")) // You can disable blueprint categories on models like this
 class BATTLETANK_API UTankTurret : public UStaticMeshComponent
 {

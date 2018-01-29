@@ -1,4 +1,4 @@
-// Forget copyrights, do whatever you want with these files
+// Copyright Tony Faye
 
 #include "TankAIController.h"
 #include "Engine/World.h"
@@ -19,11 +19,12 @@ void ATankAIController::Tick(float DeltaTime)
 	auto AITank = GetPawn();
 
 	if (!ensure(PlayerTank && AITank)) { return; }
+
 	MoveToActor(PlayerTank, AcceptanceRadius);
 
 	auto AimingComponent = AITank->FindComponentByClass<UTankAimingComponent>();
+
 	AimingComponent->AimAt(PlayerTank->GetActorLocation()); // Get the location of the player
-	// AITank->Fire(); 
-	//TODO FIX FIRING
+	AimingComponent->Fire(); 
 }
 

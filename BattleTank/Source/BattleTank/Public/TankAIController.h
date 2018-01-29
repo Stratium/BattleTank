@@ -1,4 +1,4 @@
-// Forget copyrights, do whatever you want with these files
+// Copyright Tony Faye
 
 #pragma once
 
@@ -6,7 +6,9 @@
 #include "AIController.h"
 #include "TankAIController.generated.h"
 
-class ATank;
+/*
+ * TankAIController gives instructions to the AIController on what to do when
+ */
 
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
