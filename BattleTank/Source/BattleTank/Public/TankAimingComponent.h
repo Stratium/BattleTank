@@ -38,12 +38,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	TSubclassOf<AProjectile> ProjectileBlueprint; // Alternatives https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf/
 	void MoveAimingTowards(FVector AimDirection);
+	bool IsBarrelMoving();
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "Firing") // EditAnywhere alternative https://wiki.unrealengine.com/UPROPERTY
 	float LaunchSpeed = 4000;
 	float ReloadTimeInSeconds = 3.0f;
 	double LastFireTime = 0;
+	FVector AimDirection;
 
 public:	
 	UFUNCTION(BlueprintCallable, Category = "Setup")
