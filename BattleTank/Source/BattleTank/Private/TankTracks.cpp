@@ -16,13 +16,19 @@ void UTankTracks::BeginPlay()
 
 void UTankTracks::SetThrottle(float Throttle)
 {
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1, 1);
+}
+
+void UTankTracks::DriveTrack()
+{
 	auto Name = GetName();
-	auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
+	auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation, NAME_None);
 }
+
 
 void UTankTracks::CorrectSlippage()
 {
@@ -36,6 +42,7 @@ void UTankTracks::CorrectSlippage()
 
 void UTankTracks::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("I'm hit"));
+	DriveTrack();
 	CorrectSlippage();
+	CurrentThrottle = 0;
 }
