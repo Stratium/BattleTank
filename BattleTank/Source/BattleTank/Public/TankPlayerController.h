@@ -18,7 +18,7 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 protected:
-	UFUNCTION(BlueprintImplementableEvent, Category = "Setup") // An event we can read from in blueprint
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup") // An event we can read from in Blueprint
 	void FoundAimingComponent(UTankAimingComponent* AimingCompRef);
 
 private:

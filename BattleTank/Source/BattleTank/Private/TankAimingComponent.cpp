@@ -45,7 +45,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	}
 }
 
-int UTankAimingComponent::GetCurrentAmmo() const
+int32 UTankAimingComponent::GetCurrentAmmo() const
 {
 	return CurrentAmmo;
 }

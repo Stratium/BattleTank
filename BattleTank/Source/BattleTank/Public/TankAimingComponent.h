@@ -44,10 +44,12 @@ private:
 	UTankTurret* Turret = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "Firing") // EditAnywhere alternative https://wiki.unrealengine.com/UPROPERTY
 	float LaunchSpeed = 4000;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3.0f;
 	double LastFireTime = 0;
 	FVector AimDirection;
-	int CurrentAmmo = 5; // Ammo for blueprint
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 CurrentAmmo = 5; // Ammo for Blueprint
 
 public:	
 	UFUNCTION(BlueprintCallable, Category = "Setup")
@@ -57,5 +59,5 @@ public:
 	void AimAt(FVector HitLocation);
 	EFiringState GetFiringState() const;
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetCurrentAmmo() const;
+	int32 GetCurrentAmmo() const;
 };
