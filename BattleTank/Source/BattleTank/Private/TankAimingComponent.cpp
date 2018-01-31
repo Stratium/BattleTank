@@ -17,11 +17,21 @@ void UTankAimingComponent::BeginPlay()
 	LastFireTime = GetWorld()->GetTimeSeconds(); // Makes sure the AI can't fire immediately on play
 }
 
+void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
+{
+	Barrel = BarrelToSet;
+	Turret = TurretToSet;
+}
+
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (bool isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds)
+	if (CurrentAmmo <= 0)
+	{
+		FiringState = EFiringState::OutOfAmmo;
+	}
+	else if ((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds)
 	{
 		FiringState = EFiringState::Reloading;
 	}
@@ -33,13 +43,16 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringState = EFiringState::Locked;
 	}
-	// TODO Handle aiming and locked states
 }
 
-void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
+int UTankAimingComponent::GetCurrentAmmo() const
 {
-	Barrel = BarrelToSet;
-	Turret = TurretToSet;
+	return CurrentAmmo;
+}
+
+EFiringState UTankAimingComponent::GetFiringState() const
+{
+	return FiringState;
 }
 
 bool UTankAimingComponent::IsBarrelMoving()
@@ -100,7 +113,7 @@ void UTankAimingComponent::MoveAimingTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	if (FiringState != EFiringState::Reloading)
+	if (FiringState == EFiringState::Locked || FiringState == EFiringState::Aiming)
 	{
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
@@ -113,6 +126,7 @@ void UTankAimingComponent::Fire()
 
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = GetWorld()->GetTimeSeconds();
+		CurrentAmmo = CurrentAmmo--;
 	}
 	else { return; }
 }
