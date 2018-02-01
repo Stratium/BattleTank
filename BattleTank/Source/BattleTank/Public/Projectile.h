@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "PhysicsEngine/RadialForceComponent.h"
 #include "Projectile.generated.h"
 
 /*
@@ -28,10 +29,23 @@ private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* CollisionMesh = nullptr; // Used to detect when our projectile hits things
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UParticleSystemComponent* LaunchBlast = nullptr;
+	UParticleSystemComponent* LaunchBlast = nullptr; // Instantiate our launch blast particle
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UParticleSystemComponent* ImpactBlast = nullptr;
+	UParticleSystemComponent* ImpactBlast = nullptr; // Instantiate our impact blast particle
+
+	// Instantiate the radial force projectiles apply
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	URadialForceComponent* ExplosionForce = nullptr; 
+
+	// Time until our projectiles are removed from the world
+	UPROPERTY(EditDefaultsOnly)
+	float DestroyDelay = 10; 
+
+	void OnTimerExpire();
 };	

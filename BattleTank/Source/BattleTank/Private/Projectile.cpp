@@ -1,6 +1,8 @@
 // Copyright Tony Faye
 
 #include "Projectile.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 #include "Components/StaticMeshComponent.h"
 
 AProjectile::AProjectile()
@@ -19,16 +21,19 @@ AProjectile::AProjectile()
 
 	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Blast")); // Sets a default (unremovable) component on Projectile_BP
 	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform); // Attaches it to our root component, in this case our collision mesh
-	ImpactBlast->bAutoActivate = false;
+	ImpactBlast->bAutoActivate = false; // Because we want to activate this manually
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement")); // Sets a default (unremovable) movement component on Tank_BP
 	ProjectileMovement->bAutoActivate = false;
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform); // Attaches it to our root component, in this case our collision mesh
 }
 
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit); // Setup our on hit function
 }
 
 void AProjectile::LaunchProjectile(float Speed)
@@ -41,4 +46,21 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	ExplosionForce->FireImpulse(); // Cause objects within a blueprint specified radius to be forced away from the projectile
+	SetRootComponent(ImpactBlast); // Change our root component because we want to destroy the collision mesh
+	CollisionMesh->DestroyComponent(); // Remove this mesh, which also removes the model, to prevent them persisting in world after collision
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(
+		TimerHandle,
+		this,
+		&AProjectile::OnTimerExpire,
+		DestroyDelay,
+		false
+		);
+}
+
+void AProjectile::OnTimerExpire()
+{
+	Destroy();
 }
