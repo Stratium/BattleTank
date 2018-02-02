@@ -19,12 +19,11 @@ float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEv
 	int DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
 	auto DamageToApply = FMath::Clamp(DamagePoints, 0, CurrentHealth);
 
-	UE_LOG(LogTemp, Warning, TEXT("Damage Amount = %f, DamageToApply = %i"), DamageAmount, DamageToApply);
 	CurrentHealth -= DamageToApply;
 
 	if (CurrentHealth <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("DED.JPG"));
+		OnDeath.Broadcast();
 	}
 
 	return DamageToApply;

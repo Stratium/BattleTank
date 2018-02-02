@@ -29,6 +29,10 @@ private:
 
 	void AimTowardsCrosshair();
 
+	virtual void SetPawn(APawn* InPawn) override; // Gets called when the pawn is possessed
+	UFUNCTION()
+	void OnPossessedTankDeath();
+
 	// Getters
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;

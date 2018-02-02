@@ -19,6 +19,11 @@ private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void SetPawn(APawn* InPawn) override; // Gets called when the pawn is possessed
+
 	UPROPERTY(EditDefaultsOnly)
 	float AcceptanceRadius = 8000.0f; // How close can the AI tank get to the player?
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
 };
