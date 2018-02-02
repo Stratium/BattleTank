@@ -99,7 +99,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		HitResult, // Where we store our hit
 		StartLocation, // Where the trace starts
 		EndLocation, // Where the trace ends
-		ECollisionChannel::ECC_Visibility) // Tells our trace what to collide with. In this case, everything we can see
+		ECollisionChannel::ECC_Camera) // Tells our trace what to collide with. In this case, everything we can see
 		)
 	{
 		OutHitLocation = HitResult.Location;
