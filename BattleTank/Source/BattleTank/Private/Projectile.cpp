@@ -3,6 +3,7 @@
 #include "Projectile.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
 
 AProjectile::AProjectile()
@@ -49,6 +50,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	ExplosionForce->FireImpulse(); // Cause objects within a blueprint specified radius to be forced away from the projectile
 	SetRootComponent(ImpactBlast); // Change our root component because we want to destroy the collision mesh
 	CollisionMesh->DestroyComponent(); // Remove this mesh, which also removes the model, to prevent them persisting in world after collision
+
+	UGameplayStatics::ApplyRadialDamage(
+		this, // What the damage comes from
+		ProjectileDamage, // How much damage are we doing?
+		GetActorLocation(), // Where the damage comes from
+		ExplosionForce->Radius, // What radius are we damaging in?
+		UDamageType::StaticClass(), // What type of damage are we doing?
+		TArray<AActor*>() // A list of actors to damage
+	);
 
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(

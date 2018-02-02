@@ -45,7 +45,10 @@ private:
 
 	// Time until our projectiles are removed from the world
 	UPROPERTY(EditDefaultsOnly)
-	float DestroyDelay = 10; 
+	float DestroyDelay = 10.0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float ProjectileDamage = 20.0;
 
 	void OnTimerExpire();
 };	
